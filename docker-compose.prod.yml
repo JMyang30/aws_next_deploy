@@ -1,0 +1,26 @@
+services:
+  # 배포 실행
+  frontend-prod:
+    container_name: frontend-prod
+    build: .
+    restart: always #change if you don't want your container restarting
+    environment:
+      - NODE_ENV=production
+    ports:
+      - 3000:3000
+  # 개발 실행 - hot reload 기능 사용시 next config 수정
+  frontend-dev:
+    container_name: frontend-dev
+    build:
+      context: . #if your Dockerfile is not at the same level change the path here (./frontend)
+      target: dev
+    restart: always
+    command: npm run dev
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - 3000:3000
